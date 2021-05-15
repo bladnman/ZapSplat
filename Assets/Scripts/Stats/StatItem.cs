@@ -6,7 +6,10 @@ using UnityEngine;
 
 public class StatItem : MonoBehaviour {
   [SerializeField] protected float StartValue;
+
+  [Header("Debugging")]
   [SerializeField] protected float currentValue;
+  [SerializeField] protected float minExpirationSec = -1;
 
   public event Action onUpdated;
 
@@ -14,6 +17,20 @@ public class StatItem : MonoBehaviour {
 
   void Start() {
     _value = StartValue;
+    UpdateValueCache();
+  }
+  private void Update() {
+    // no expirations ahead
+    if (minExpirationSec == -1) return;
+
+    // nothing expired
+    if (minExpirationSec > Time.time) return;
+
+    // something expired
+    DealWithExpiredItem();
+  }
+  void DealWithExpiredItem() {
+    PurgeExpiredMods();
     UpdateValueCache();
   }
 
@@ -30,6 +47,9 @@ public class StatItem : MonoBehaviour {
       UpdateValueCache();
     }
   }
+  public float GetValue() {
+    return Value;
+  }
   public void Increment(float value) {
     Value = _value + value;
   }
@@ -37,8 +57,13 @@ public class StatItem : MonoBehaviour {
     Value = _value - value;
   }
   protected void UpdateValueCache() {
-    float modValue = mods.Aggregate(0f, (acc, mod) => acc + mod.value);
+    PurgeExpiredMods();
+
+    float modValue = GetTotalModValue();
     currentValue = _value + modValue;
+
+    minExpirationSec = GetMinExpiration() ?? -1;
+
     if (onUpdated != null) {
       onUpdated();
     }
@@ -49,6 +74,9 @@ public class StatItem : MonoBehaviour {
   //
   public void AddModValue(float value) {
     this.AddMod(new StatMod(value));
+  }
+  public void AddModValue(float value, float seconds) {
+    this.AddMod(new StatMod(value, seconds));
   }
   public void AddMod(StatMod mod) {
     mods.Add(mod);
@@ -64,6 +92,26 @@ public class StatItem : MonoBehaviour {
   }
   public bool HasMods() {
     return mods.Count > 0;
+  }
+  void PurgeExpiredMods() {
+    mods.RemoveAll(mod => mod.expirationSec != -1 & mod.expirationSec <= Time.time);
+  }
+
+  //
+  // UTILS
+  //
+  public float GetTotalModValue() {
+    return mods.Aggregate(0f, (acc, mod) => acc + mod.value);
+  }
+  public float? GetMinExpiration() {
+    var expiringMods = mods.Where(mod => mod.expirationSec != null);
+    if (expiringMods.Count() < 1) return null;
+    return expiringMods.Min(mod => (float)mod.expirationSec);
+  }
+  public float? GetMaxExpiration() {
+    var expiringMods = mods.Where(mod => mod.expirationSec != null);
+    if (expiringMods.Count() < 1) return null;
+    return expiringMods.Max(mod => (float)mod.expirationSec);
   }
 
 }
