@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AbilityPack))]
+[RequireComponent(typeof(STAT_MoveSpeed))]
 public class PlayerMovement : MonoBehaviour {
-  [SerializeField] float speed = 10f;
-  public float GetSpeed() { return pack.GetSpeed(speed); }
 
-  AbilityPack pack;
-
-  private void Start() {
-    pack = GetComponent<AbilityPack>();
+  float GetSpeed() {
+    return moveSpeedStat.Value;
   }
 
+  StatItem moveSpeedStat;
+
+  private void Start() {
+    moveSpeedStat = MUtil.GetStat<STAT_MoveSpeed>(gameObject);
+  }
   void Update() {
     var xDelta = 0f;
     var yDelta = 0f;

@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Speed_PU : Collectible {
+public class Happy_PU : Collectible {
   [SerializeField] float amount = 2.0f;
 
   StatItem GetStat(GameObject source) {
-    return MUtil.GetStat<STAT_MoveSpeed>(source);
+    // C H A N G E    M Y    T Y P E
+    return MUtil.GetStat<STAT_Happy>(source);
   }
 
   public override bool IsCollectableBy(GameObject collector) {

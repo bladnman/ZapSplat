@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8479200585756668686}
   - component: {fileID: 8479200585756668687}
-  - component: {fileID: 8479200585756668685}
   - component: {fileID: 8479200585756668684}
   m_Layer: 8
   m_Name: Simple Collectible
@@ -85,18 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8479200585756668685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8479200585756668680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 320fb2a888e184b3d8171dc60e9c4b9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &8479200585756668684
 CircleCollider2D:
   m_ObjectHideFlags: 0
