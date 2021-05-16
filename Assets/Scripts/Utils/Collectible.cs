@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Collectible : MonoBehaviour {
-  [SerializeField] protected float amount = 1f;
   [SerializeField] protected bool IsRemovedAfterCollection = true;
 
   // override me
@@ -18,7 +17,7 @@ public class Collectible : MonoBehaviour {
   private void OnTriggerEnter2D(Collider2D other) {
     GameObject collector = other.gameObject;
     if (!IsCollectableBy(collector)) return;
-
+    Debug.Log($"M@ [{GetType()}] collecting");   // M@: 
     DoCollection(collector);
     if (IsRemovedAfterCollection) {
       Destroy(gameObject);

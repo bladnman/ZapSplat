@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : Character {
+
+  public Inventory inventory;
+
+  private void Awake() {
+    inventory = new Inventory();
+  }
+
   public void DidExit() {
-    Debug.Log($"M@ [{GetType()}] I Exited!");   // M@: 
     gameObject.SetActive(false);
   }
-  public void DidRespawn() {
-    Debug.Log($"M@ [{GetType()}] Good to be back!");   // M@: 
-  }
+  public void DidRespawn() { }
 }
